@@ -103,7 +103,7 @@ class HumanEval(Evaluator):
         progress_bar.close()
 
         log.info("Storing samples...")
-        model_name = model.model_path.replace("/", "_")
+        model_name = model.model_name.replace("/", "_")
         pred_filename = f"{out_path}/{model_name}_predictions.jsonl"
         write_jsonl(pred_filename, samples)
 
