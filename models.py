@@ -54,7 +54,20 @@ ND2LITELLM = {
     "anthropic/claude-3-opus-20240229": "claude-3-opus-20240229",
     "anthropic/claude-3-5-sonnet-20240620": "claude-3-5-sonnet-20240620",
     "google/gemini-1.5-pro-latest": "gemini/gemini-1.5-pro-latest",
+    "togetherai/Llama-3-70b-chat-hf": "together_ai/meta-llama/Llama-3-70b-chat-hf",
+    "replicate/meta-llama-3-70b-instruct": "replicate/meta/meta-llama-3-70b-instruct",
+    "togetherai/Qwen2-72B-Instruct": "together_ai/Qwen/Qwen2-72B-Instruct",
+    "togetherai/llama-3.1-405b-instruct": "together_ai/meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+    "togetherai/llama-3.1-70b-instruct": "together_ai/meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+    "togetherai/llama-3.1-8b-instruct": "together_ai/meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
+    "openai/gpt-4o-mini-2024-07-18": "gpt-4o-mini-2024-07-18",
+    "nvidia_nim/llama-3.1-8b-instruct": "nvidia_nim/meta/llama-3.1-8b-instruct",
+    "replicate/llama-3.1-405b-instruct": "replicate/meta/meta-llama-3.1-405b-instruct",
+    "fireworksai/llama-3.1-405b-instruct": "fireworks_ai/accounts/fireworks/models/llama-v3p1-405b-instruct",
+    "fireworksai/llama-3.1-70b-instruct": "fireworks_ai/accounts/fireworks/models/llama-v3p1-70b-instruct",
+    "mistral/mistral-large-2407": "mistral/mistral-large-2407",
 }
+
 class LLM(BaseLLM):
     def __init__(self, model_name: str, **kwargs) -> None:
         self.model_name = ND2LITELLM[model_name]

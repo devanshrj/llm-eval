@@ -57,9 +57,21 @@ def main() -> None:
     MODELS = [
         # 'anthropic/claude-3-5-sonnet-20240620',
         # 'openai/gpt-4o-2024-05-13',
-        'google/gemini-1.5-pro-latest',
+        # 'google/gemini-1.5-pro-latest',
         # 'openai/gpt-4-turbo-2024-04-09',
         # 'anthropic/claude-3-opus-20240229',
+        # "togetherai/Llama-3-70b-chat-hf",
+        # "replicate/meta-llama-3-70b-instruct",
+        # "togetherai/Qwen2-72B-Instruct",
+        # "togetherai/llama-3.1-405b-instruct",
+        # "togetherai/llama-3.1-70b-instruct",
+        # "togetherai/llama-3.1-8b-instruct",
+        # "openai/gpt-4o-mini-2024-07-18",
+        # "nvidia_nim/llama-3.1-8b-instruct",
+        # "replicate/llama-3.1-405b-instruct",
+        # "fireworksai/llama-3.1-405b-instruct",
+        # "fireworksai/llama-3.1-70b-instruct",
+        "mistral/mistral-large-2407"
     ]
 
     llm = LLM(model_name=MODELS[0])
