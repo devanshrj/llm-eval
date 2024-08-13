@@ -3,17 +3,7 @@ import logging
 import os
 
 from evaluation import HumanEval
-from models import GeminiLLM
-
-
-DATASETS = {
-    "humaneval": HumanEval,
-}
-
-
-MODELS = {
-    "gemini-pro": GeminiLLM,
-}
+from models import LLM
 
 
 def parse_args() -> argparse.Namespace:
@@ -21,24 +11,6 @@ def parse_args() -> argparse.Namespace:
     Parse command line arguments.
     """
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--model",
-        type=str,
-        help="Model to evaluate",
-        default="gemini-pro",
-    )
-    parser.add_argument(
-        "--dataset",
-        type=str,
-        help="Dataset to evaluate on",
-        default="humaneval",
-    )
-    parser.add_argument(
-        "--key",
-        type=str,
-        help="API key for the model if using a provider",
-        required=True,
-    )
     parser.add_argument(
         "--data-path",
         type=str,
@@ -55,7 +27,7 @@ def parse_args() -> argparse.Namespace:
         "--n",
         type=int,
         help="Number of samples per task",
-        default=3,
+        default=1,
     )
     return parser.parse_args()
 
@@ -75,8 +47,6 @@ def main() -> None:
     logging.info(args)
 
     # retrieve args
-    model_name = args.model
-    api_key = args.key
     n_sample = args.n
     data_path = args.data_path
     out_path = args.out_path
@@ -84,11 +54,31 @@ def main() -> None:
 
     # create model and dataset objects
     logging.info("Creating model and dataset objects")
-    llm = MODELS[model_name](model_name, api_key=api_key)
-    evaluator = DATASETS[args.dataset]()
+    MODELS = [
+        # 'anthropic/claude-3-5-sonnet-20240620',
+        # 'openai/gpt-4o-2024-05-13',
+        # 'google/gemini-1.5-pro-latest',
+        # 'openai/gpt-4-turbo-2024-04-09',
+        # 'anthropic/claude-3-opus-20240229',
+        # "togetherai/Llama-3-70b-chat-hf",
+        # "replicate/meta-llama-3-70b-instruct",
+        # "togetherai/Qwen2-72B-Instruct",
+        # "togetherai/llama-3.1-405b-instruct",
+        # "togetherai/llama-3.1-70b-instruct",
+        # "togetherai/llama-3.1-8b-instruct",
+        # "openai/gpt-4o-mini-2024-07-18",
+        # "nvidia_nim/llama-3.1-8b-instruct",
+        # "replicate/llama-3.1-405b-instruct",
+        # "fireworksai/llama-3.1-405b-instruct",
+        # "fireworksai/llama-3.1-70b-instruct",
+        "mistral/mistral-large-2407"
+    ]
+
+    llm = LLM(model_name=MODELS[0])
+    evaluator = HumanEval()
 
     # run evaluation
-    logging.info("Running evaluation")
+    logging.info(f"Running evaluation for {MODELS[0]}")
     result = evaluator.evaluate(llm, data_path, out_path, n_sample=n_sample)
     print(result)
 
