@@ -24,17 +24,23 @@ def parse_args() -> argparse.Namespace:
         default='HumanEvalX',
     )
     parser.add_argument(
-        "--data-path",
+        "--language",
         type=str,
-        help="Dataset path",
-        # default='human-eval/data/HumanEval.jsonl.gz',
-        default='humaneval-x/python/data/humaneval_python.jsonl.gz',
+        help="Language to evaluate",
+        default='python',
     )
+    # parser.add_argument(
+    #     "--data-path",
+    #     type=str,
+    #     help="Dataset path",
+    #     # default='human-eval/data/HumanEval.jsonl.gz',
+    #     default='humaneval-x/python/data/humaneval_python.jsonl.gz',
+    # )
     parser.add_argument(
         "--out-path",
         type=str,
         help="Output path",
-        default='humanevalx_results',
+        default='./humanevalx_results',
     )
     parser.add_argument(
         "--n",
@@ -61,7 +67,8 @@ def main() -> None:
 
     # retrieve args
     n_sample = args.n
-    data_path = args.data_path
+    language = args.language
+    data_path = f'./humaneval-x/{language}/data/humaneval_{language}.jsonl.gz'
     out_path = args.out_path
     os.makedirs(args.out_path, exist_ok=True)
 

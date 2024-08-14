@@ -58,7 +58,7 @@ ND2LITELLM = {
     "anthropic/claude-3-opus-20240229": "claude-3-opus-20240229",
     "anthropic/claude-3-5-sonnet-20240620": "claude-3-5-sonnet-20240620",
     # google
-    "google/gemini-1.5-pro-latest": "gemini/gemini-1.5-pro-latest",
+    "google/gemini-1.5-pros-latest": "gemini/gemini-1.5-pro-latest",
     # togetherai
     "togetherai/Qwen2-72B-Instruct": "together_ai/Qwen/Qwen2-72B-Instruct",
     "togetherai/llama-3.1-405b-instruct": "together_ai/meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
