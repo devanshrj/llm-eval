@@ -49,22 +49,25 @@ class GeminiLLM(BaseLLM):
 
 
 ND2LITELLM = {
+    # openai
+    "openai/gpt-4o-2024-08-06": "gpt-4o-2024-08-06",
     "openai/gpt-4o-2024-05-13": "gpt-4o-2024-05-13",
     "openai/gpt-4-turbo-2024-04-09": "gpt-4-turbo-2024-04-09",
+    "openai/gpt-4o-mini-2024-07-18": "gpt-4o-mini-2024-07-18",
+    # anthropic
     "anthropic/claude-3-opus-20240229": "claude-3-opus-20240229",
     "anthropic/claude-3-5-sonnet-20240620": "claude-3-5-sonnet-20240620",
+    # google
     "google/gemini-1.5-pro-latest": "gemini/gemini-1.5-pro-latest",
-    "togetherai/Llama-3-70b-chat-hf": "together_ai/meta-llama/Llama-3-70b-chat-hf",
-    "replicate/meta-llama-3-70b-instruct": "replicate/meta/meta-llama-3-70b-instruct",
+    # togetherai
     "togetherai/Qwen2-72B-Instruct": "together_ai/Qwen/Qwen2-72B-Instruct",
     "togetherai/llama-3.1-405b-instruct": "together_ai/meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
     "togetherai/llama-3.1-70b-instruct": "together_ai/meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
     "togetherai/llama-3.1-8b-instruct": "together_ai/meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
-    "openai/gpt-4o-mini-2024-07-18": "gpt-4o-mini-2024-07-18",
-    "nvidia_nim/llama-3.1-8b-instruct": "nvidia_nim/meta/llama-3.1-8b-instruct",
-    "replicate/llama-3.1-405b-instruct": "replicate/meta/meta-llama-3.1-405b-instruct",
+    # # fireworksai
     "fireworksai/llama-3.1-405b-instruct": "fireworks_ai/accounts/fireworks/models/llama-v3p1-405b-instruct",
     "fireworksai/llama-3.1-70b-instruct": "fireworks_ai/accounts/fireworks/models/llama-v3p1-70b-instruct",
+    # mistral
     "mistral/mistral-large-2407": "mistral/mistral-large-2407",
 }
 
@@ -80,6 +83,5 @@ class LLM(BaseLLM):
         n_sample = kwargs.get("n_sample", 1)
         for _ in range(n_sample):
             response = litellm.completion(model=self.model_name, messages=messages, temperature=self.temperature)
-            # print(response.choices[0].message.content)
             sample_completions.append(response.choices[0].message.content)
         return sample_completions

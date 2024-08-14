@@ -1,2 +1,3 @@
 -e ./human-eval
-google-generativeai
+-e ./humaneval-x
+litellm

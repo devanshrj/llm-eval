@@ -2,7 +2,7 @@ import argparse
 import logging
 import os
 
-from evaluation import HumanEval
+from evaluation import HumanEval, HumanEvalX
 from models import LLM
 
 
@@ -12,16 +12,29 @@ def parse_args() -> argparse.Namespace:
     """
     parser = argparse.ArgumentParser()
     parser.add_argument(
+        "--model",
+        type=str,
+        help="Model to evaluate",
+        default='openai/gpt-4o-mini-2024-07-18',
+    )
+    parser.add_argument(
+        "--dataset",
+        type=str,
+        help="Dataset to evaluate on",
+        default='HumanEvalX',
+    )
+    parser.add_argument(
         "--data-path",
         type=str,
         help="Dataset path",
-        default='human-eval/data/HumanEval.jsonl.gz',
+        # default='human-eval/data/HumanEval.jsonl.gz',
+        default='humaneval-x/python/data/humaneval_python.jsonl.gz',
     )
     parser.add_argument(
         "--out-path",
         type=str,
         help="Output path",
-        default='results',
+        default='humanevalx_results',
     )
     parser.add_argument(
         "--n",
@@ -66,19 +79,22 @@ def main() -> None:
         # "togetherai/llama-3.1-405b-instruct",
         # "togetherai/llama-3.1-70b-instruct",
         # "togetherai/llama-3.1-8b-instruct",
-        # "openai/gpt-4o-mini-2024-07-18",
+        "openai/gpt-4o-mini-2024-07-18",
         # "nvidia_nim/llama-3.1-8b-instruct",
         # "replicate/llama-3.1-405b-instruct",
         # "fireworksai/llama-3.1-405b-instruct",
         # "fireworksai/llama-3.1-70b-instruct",
-        "mistral/mistral-large-2407"
+        # "mistral/mistral-large-2407"
     ]
 
-    llm = LLM(model_name=MODELS[0])
-    evaluator = HumanEval()
+    llm = LLM(model_name=args.model)
+    if args.dataset == 'HumanEvalX':
+        evaluator = HumanEvalX()
+    else:
+        evaluator = HumanEval()
 
     # run evaluation
-    logging.info(f"Running evaluation for {MODELS[0]}")
+    logging.info(f"Running evaluation for {args.model}")
     result = evaluator.evaluate(llm, data_path, out_path, n_sample=n_sample)
     print(result)
 
