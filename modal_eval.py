@@ -15,14 +15,14 @@ APP_NAME = f"humaneval-x-{MODEL_NAME.split('/')[1]}"
 
 
 eval_image = (
-    # modal.Image.from_registry(
-    #     "rishubi/codegeex"
-    # )
     modal.Image.from_registry(
-        "ubuntu:22.04", add_python="3.11"
-    ).apt_install(
-        "git",
+        "rishubi/codegeex"
     )
+    # modal.Image.from_registry(
+    #     "ubuntu:22.04", add_python="3.11"
+    # ).apt_install(
+    #     "git",
+    # )
     # .pip_install_private_repos(
     #     "github.com/devanshrj/llm-eval@humaneval-x",
     #     git_user="devanshrj",
@@ -53,11 +53,8 @@ class Colors:
 
 @app.function(
     image=eval_image,
-    # gpu=modal.gpu.A100(size="80GB"),
     timeout=24 * HOURS,
     volumes={VOL_MOUNT_PATH: volume},
-    # secrets=[modal.Secret.from_name("github-read-private")]
-    # _allow_background_volume_commits=True,
 )
 def evaluate():
     import os
