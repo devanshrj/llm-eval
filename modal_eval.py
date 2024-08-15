@@ -18,16 +18,6 @@ eval_image = (
     modal.Image.from_registry(
         "rishubi/codegeex"
     )
-    # modal.Image.from_registry(
-    #     "ubuntu:22.04", add_python="3.11"
-    # ).apt_install(
-    #     "git",
-    # )
-    # .pip_install_private_repos(
-    #     "github.com/devanshrj/llm-eval@humaneval-x",
-    #     git_user="devanshrj",
-    #     secrets=[modal.Secret.from_name("github-read-private")]
-    # )
 )
 
 app = modal.App(name=APP_NAME, image=eval_image)
@@ -66,7 +56,7 @@ def evaluate():
     print("Evaluating model...")
     run_folder = Path("/vol")
     evals_folder = Path(run_folder) / "llm-eval"
-    artifacts_folder = Path(run_folder) / "artifacts"
+    artifacts_folder = Path(run_folder) / "artifacts" / {LANGUAGE}
 
     if os.path.exists(evals_folder):
         RM_CMD = "rm -rf llm-eval"

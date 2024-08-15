@@ -69,8 +69,8 @@ def main() -> None:
     n_sample = args.n
     language = args.language
     data_path = f"./humaneval-x/{language}/data/humaneval_{language}.jsonl.gz"
-    out_path = f"{args.out_path}/{language}"
-    os.makedirs(args.out_path, exist_ok=True)
+    out_path = args.out_path
+    os.makedirs(out_path, exist_ok=True)
 
     # create model and dataset objects
     logging.info("Creating model and dataset objects")
