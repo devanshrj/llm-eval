@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
-import litellm
+from typing import List
 
+import litellm
 import dotenv
 dotenv.load_dotenv()
 
@@ -10,7 +11,7 @@ class BaseLLM(ABC):
     Base class to create wrappers for large language models from different providers.
     """
     @abstractmethod
-    def generate_completions(self, input_prompt: str, **kwargs) -> list[str]:
+    def generate_completions(self, input_prompt: str, **kwargs) -> List[str]:
         """
         Generate num_samples number of completions for a given input prompt.
         """
@@ -46,7 +47,7 @@ class LLM(BaseLLM):
         self.temperature = kwargs.get("temperature", 0.0)
         self.n = kwargs.get("n", 1)
     
-    def generate_completions(self, input_prompt: str, **kwargs) -> list[str]:
+    def generate_completions(self, input_prompt: str, **kwargs) -> List[str]:
         messages = [{ "content": input_prompt, "role": "user"}]
         sample_completions = []
         n_sample = kwargs.get("n_sample", 1)
