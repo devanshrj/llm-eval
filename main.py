@@ -68,8 +68,8 @@ def main() -> None:
     # retrieve args
     n_sample = args.n
     language = args.language
-    data_path = f'./humaneval-x/{language}/data/humaneval_{language}.jsonl.gz'
-    out_path = args.out_path
+    data_path = f"./humaneval-x/{language}/data/humaneval_{language}.jsonl.gz"
+    out_path = f"{args.out_path}/{language}"
     os.makedirs(args.out_path, exist_ok=True)
 
     # create model and dataset objects
@@ -103,7 +103,7 @@ def main() -> None:
     # run evaluation
     logging.info(f"Running evaluation for {args.model}")
     result = evaluator.evaluate(llm, data_path, out_path, n_sample=n_sample)
-    print(result)
+    logging.info(f"Completed evaluation for {args.model}!")
 
 
 if __name__ == "__main__":
