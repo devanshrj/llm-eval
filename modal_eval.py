@@ -9,8 +9,8 @@ MODEL_PATH = "/runs/model"
 MINUTES = 60  # seconds
 HOURS = 60 * MINUTES
 
-MODEL_NAME = "openai/gpt-4o-mini-2024-07-18"
-LANGUAGE = 'python'
+MODEL_NAME = "anthropic/claude-3-5-sonnet-20240620"
+LANGUAGE = 'java'
 APP_NAME = f"humaneval-x-{MODEL_NAME.split('/')[1]}"
 
 
@@ -56,7 +56,8 @@ def evaluate():
     print("Evaluating model...")
     run_folder = Path("/vol")
     evals_folder = Path(run_folder) / "llm-eval"
-    artifacts_folder = Path(run_folder) / "artifacts" / {LANGUAGE}
+    exec_folder = Path(run_folder) / "executions"
+    artifacts_folder = Path(run_folder) / "artifacts"
 
     if os.path.exists(evals_folder):
         RM_CMD = "rm -rf llm-eval"

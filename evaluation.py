@@ -123,6 +123,7 @@ class HumanEvalX(Evaluator):
         Create an instruction-based prompt for the given problem.
         """
         PROMPT_TEMPLATE = """Please generate code to complete the following problem.\n```{language}\n{prompt}\n```\nEnclose your solution in triple backticks. Only generate the code block to finish the code, do not include the prompt, function definition or any explanation."""
+        # PROMPT_TEMPLATE = """Please generate code to complete the following problem.\n{prompt}\n Do not enclose your solution in triple backticks. Only generate the code block to finish the code, do not include the prompt, function definition or any explanation."""
         return PROMPT_TEMPLATE.format(prompt=prompt, language=language)
     
     def process_code(self, completion: str, language: str) -> str:
@@ -173,17 +174,19 @@ class HumanEvalX(Evaluator):
                 sample = dict(task_id=task_id,
                               generation=completion,
                               prompt=og_prompt)
+                # print("prompt:", prompt)
+                # print("completion:", completion)
                 samples.append(sample)
             progress_bar.update(n_sample)
         progress_bar.close()
 
         log.info("Storing samples...")
         model_name = model.model_name.replace("/", "_")
-        pred_filename = f"{out_path}/{model_name}_predictions.jsonl"
+        pred_filename = f"{out_path}/{language}/{model_name}_predictions.jsonl"
         write_jsonl(pred_filename, samples)
 
         log.info("Evaluating samples...")
-        tmp_path = f"{os.getcwd()}/executions/{model_name}"
+        tmp_path = f"{out_path}/executions/{model_name}"
         hex_evaluate(
             input_file=pred_filename,
             problem_file=data_path,

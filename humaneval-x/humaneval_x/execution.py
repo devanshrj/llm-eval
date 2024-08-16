@@ -142,7 +142,7 @@ def check_correctness(
             except TimeoutException:
                 result.append("timed out")
 
-            shutil.rmtree(tmp_dir)
+            # shutil.rmtree(tmp_dir)
         elif "js" in language_type.lower():
             import os
             import shutil
@@ -181,7 +181,7 @@ def check_correctness(
             except TimeoutException:
                 result.append("timed out")
 
-            shutil.rmtree(tmp_dir)
+            # shutil.rmtree(tmp_dir)
         elif "cpp" in language_type.lower():
             import os
             import shutil
@@ -238,8 +238,7 @@ def check_correctness(
                         result.append(f"failed: {err}")
                 except TimeoutException:
                     result.append("timed out")
-
-            shutil.rmtree(tmp_dir)
+            # shutil.rmtree(tmp_dir)
         elif "rust" in language_type.lower():  
             import os         
             
@@ -358,7 +357,7 @@ def check_correctness(
                     res = f"failed: {e}"
             result.append(res)
 
-            shutil.rmtree(tmp_dir)
+            # shutil.rmtree(tmp_dir)
         
     manager = multiprocessing.Manager()
     result = manager.list()
