@@ -49,6 +49,16 @@ def parse_args() -> argparse.Namespace:
         default='./humanevalx_results/executions',
     )
     parser.add_argument(
+        "-process",
+        action="store_false",
+        help="Post process code",
+    )
+    parser.add_argument(
+        "-cleanup",
+        action="store_false",
+        help="Clean up code",
+    )
+    parser.add_argument(
         "--n",
         type=int,
         help="Number of samples per task",
@@ -110,7 +120,7 @@ def main() -> None:
 
     # run evaluation
     logging.info(f"Running evaluation for {args.model}")
-    result = evaluator.evaluate(llm, data_path, out_path, n_sample=n_sample, tmp_path=tmp_path)
+    evaluator.evaluate(llm, data_path, out_path, n_sample=n_sample, tmp_path=tmp_path, post_process=args.process, cleanup_code=args.cleanup)
     logging.info(f"Completed evaluation for {args.model}!")
 
 

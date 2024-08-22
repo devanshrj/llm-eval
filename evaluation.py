@@ -171,7 +171,7 @@ class HumanEvalX(Evaluator):
             completion = completion.replace(f'```{language}', '')
             try:
                 next_line = completion.index('```')
-                completion = completion[:next_line].strip()
+                completion = completion[:next_line]
             except:
                 log.error(completion)
         if "__name__ == \"__main__\"" in completion:
@@ -190,7 +190,7 @@ class HumanEvalX(Evaluator):
         n_sample = kwargs.get("n_sample", 1)
         use_template = kwargs.get("use_template", True)
         post_process = kwargs.get("post_process", True)
-        cleanup_code = kwargs.get("cleanup_code", False)
+        cleanup_code = kwargs.get("cleanup_code", True)
         tmp_path = kwargs.get("tmp_path", None)
 
         log.info("Generating samples...")
@@ -210,8 +210,6 @@ class HumanEvalX(Evaluator):
                 sample = dict(task_id=task_id,
                               generation=completion,
                               prompt=og_prompt)
-                # print("prompt:", prompt)
-                # print("completion:", completion)
                 samples.append(sample)
             progress_bar.update(n_sample)
         progress_bar.close()
