@@ -43,6 +43,12 @@ def parse_args() -> argparse.Namespace:
         default='./humanevalx_results',
     )
     parser.add_argument(
+        "--tmp-path",
+        type=str,
+        help="Temp path",
+        default='./humanevalx_results/executions',
+    )
+    parser.add_argument(
         "--n",
         type=int,
         help="Number of samples per task",
@@ -69,8 +75,10 @@ def main() -> None:
     n_sample = args.n
     language = args.language
     data_path = f"./humaneval-x/{language}/data/humaneval_{language}.jsonl.gz"
-    out_path = args.out_path
+    out_path = f"{args.out_path}/{language}"
     os.makedirs(out_path, exist_ok=True)
+    tmp_path = args.tmp_path
+    os.makedirs(tmp_path, exist_ok=True)
 
     # create model and dataset objects
     logging.info("Creating model and dataset objects")
@@ -102,7 +110,7 @@ def main() -> None:
 
     # run evaluation
     logging.info(f"Running evaluation for {args.model}")
-    result = evaluator.evaluate(llm, data_path, out_path, n_sample=n_sample)
+    result = evaluator.evaluate(llm, data_path, out_path, n_sample=n_sample, tmp_path=tmp_path)
     logging.info(f"Completed evaluation for {args.model}!")
 
 

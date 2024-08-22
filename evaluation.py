@@ -126,6 +126,39 @@ class HumanEvalX(Evaluator):
         # PROMPT_TEMPLATE = """Please generate code to complete the following problem.\n{prompt}\n Do not enclose your solution in triple backticks. Only generate the code block to finish the code, do not include the prompt, function definition or any explanation."""
         return PROMPT_TEMPLATE.format(prompt=prompt, language=language)
     
+    def cleanup_code(self, code: str, language: str = None) -> str:
+        """
+        Cleans up the generated code.
+        """
+        if language.lower() == "python":
+            end_words = ["\ndef", "\nclass", "\nif", "\n#", "\nprint", "\nassert"]
+            for w in end_words:
+                if w in code:
+                    code = code[:code.rfind(w)]
+        elif language.lower() == "java":
+            main_pos = code.find("public static void main")
+            if main_pos != -1:
+                code = code[:main_pos] + '}'
+            if '}' in code:
+                code = code[:code.rfind('}')] + '}'
+            if code.count('{') + 1 == code.count('}'):
+                code += "\n}"
+        elif language.lower() == "go":
+            end_words = ["\n//", "\nfunc main("]
+            for w in end_words:
+                if w in code:
+                    code = code[:code.rfind(w)]
+            if '}' in code:
+                code = code[:code.rfind('}')] + '}'
+        elif language.lower() == "cpp":
+            if '}' in code:
+                code = code[:code.rfind('}')] + '}'
+        elif language.lower() == "js":
+            if '}' in code:
+                code = code[:code.rfind('}')] + '}'
+
+        return code
+
     def process_code(self, completion: str, language: str) -> str:
         """
         Post-process generated code to remove unnecessary parts.
@@ -138,7 +171,7 @@ class HumanEvalX(Evaluator):
             completion = completion.replace(f'```{language}', '')
             try:
                 next_line = completion.index('```')
-                completion = completion[:next_line]
+                completion = completion[:next_line].strip()
             except:
                 log.error(completion)
         if "__name__ == \"__main__\"" in completion:
@@ -156,6 +189,7 @@ class HumanEvalX(Evaluator):
         n_sample = kwargs.get("n_sample", 1)
         use_template = kwargs.get("use_template", True)
         post_process = kwargs.get("post_process", True)
+        tmp_path = kwargs.get("tmp_path", None)
         samples = []
 
         log.info("Generating samples...")
@@ -171,6 +205,7 @@ class HumanEvalX(Evaluator):
             for completion in completions:
                 if post_process:
                     completion = self.process_code(completion, language)
+                    completion = self.cleanup_code(completion, language)
                 sample = dict(task_id=task_id,
                               generation=completion,
                               prompt=og_prompt)
@@ -182,11 +217,11 @@ class HumanEvalX(Evaluator):
 
         log.info("Storing samples...")
         model_name = model.model_name.replace("/", "_")
-        pred_filename = f"{out_path}/{language}/{model_name}_predictions.jsonl"
+        pred_filename = f"{out_path}/{model_name}_predictions.jsonl"
         write_jsonl(pred_filename, samples)
 
         log.info("Evaluating samples...")
-        tmp_path = f"{out_path}/executions/{model_name}"
+        tmp_path = f"{tmp_path}/{model_name}"
         hex_evaluate(
             input_file=pred_filename,
             problem_file=data_path,
