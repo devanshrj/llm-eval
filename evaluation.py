@@ -203,11 +203,13 @@ class HumanEvalX(Evaluator):
                 prompt = self.create_prompt(og_prompt, language)
             completions = model.generate_completions(prompt, n_sample=n_sample)
             for completion in completions:
+                raw_completion = completion
                 if post_process:
                     completion = self.process_code(completion, language)
                 if cleanup_code:
                     completion = self.cleanup_code(completion, language)
                 sample = dict(task_id=task_id,
+                              raw_generation=raw_completion,
                               generation=completion,
                               prompt=og_prompt)
                 samples.append(sample)
