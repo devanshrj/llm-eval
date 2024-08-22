@@ -186,16 +186,16 @@ class HumanEvalX(Evaluator):
     def evaluate(self, model: BaseLLM, data_path: str, out_path: str, **kwargs) -> dict:
         log.info("Reading problems...")
         dataset = read_dataset(data_path, dataset_type="humaneval")
+
         n_sample = kwargs.get("n_sample", 1)
         use_template = kwargs.get("use_template", True)
         post_process = kwargs.get("post_process", True)
+        cleanup_code = kwargs.get("cleanup_code", False)
         tmp_path = kwargs.get("tmp_path", None)
-        samples = []
 
         log.info("Generating samples...")
-        progress_bar = tqdm(total=len(dataset) * n_sample,
-                            desc="Generating samples")
-
+        progress_bar = tqdm(total=len(dataset) * n_sample, desc="Generating samples")
+        samples = []
         for task_id in dataset:
             language = task_id.split("/")[0].lower()
             og_prompt = dataset[task_id]["prompt"]
@@ -205,6 +205,7 @@ class HumanEvalX(Evaluator):
             for completion in completions:
                 if post_process:
                     completion = self.process_code(completion, language)
+                if cleanup_code:
                     completion = self.cleanup_code(completion, language)
                 sample = dict(task_id=task_id,
                               generation=completion,
