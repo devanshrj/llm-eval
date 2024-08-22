@@ -73,9 +73,10 @@ def process_humaneval_test(sample, problems, example_test=False):
         else:
             test_string = test_setup + "\n" + prompt + code + "\n" + test
     elif language == "rust":
-        main = "\nfn main(){ \n } \n"
-        declaration = problems[task_id]["declaration"]
-        test_string = main + declaration + prompt + code + test
+        main = "\nfn main(){ \n"
+        # declaration = problems[task_id]["declaration"]
+        # test_string = main + declaration + prompt + code + test
+        test_string = main + prompt + code + test + "} \n"
 
     return test_string
 

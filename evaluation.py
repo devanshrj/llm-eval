@@ -7,6 +7,7 @@ from human_eval.evaluation import evaluate_functional_correctness as he_evaluate
 
 from humaneval_x.utils import read_dataset
 from humaneval_x.evaluation import evaluate_functional_correctness as hex_evaluate
+from humaneval_x.evaluation import process_humaneval_test
 
 from models import BaseLLM
 
@@ -199,6 +200,8 @@ class HumanEvalX(Evaluator):
         for task_id in dataset:
             language = task_id.split("/")[0].lower()
             og_prompt = dataset[task_id]["prompt"]
+            if language == 'rust':
+                og_prompt = dataset[task_id]["declaration"] + og_prompt
             if use_template:
                 prompt = self.create_prompt(og_prompt, language)
             completions = model.generate_completions(prompt, n_sample=n_sample)
@@ -222,11 +225,11 @@ class HumanEvalX(Evaluator):
         write_jsonl(pred_filename, samples)
 
         log.info("Evaluating samples...")
-        tmp_path = f"{tmp_path}/{model_name}"
+        # tmp_path = f"{tmp_path}/{model_name}"
         hex_evaluate(
             input_file=pred_filename,
             problem_file=data_path,
             out_dir=out_path,
-            tmp_dir=tmp_path,
+            # tmp_dir=tmp_path,
         )
         log.info("Evaluation complete.")
