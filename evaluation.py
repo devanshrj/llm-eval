@@ -7,7 +7,6 @@ from human_eval.evaluation import evaluate_functional_correctness as he_evaluate
 
 from humaneval_x.utils import read_dataset
 from humaneval_x.evaluation import evaluate_functional_correctness as hex_evaluate
-from humaneval_x.evaluation import process_humaneval_test
 
 from models import BaseLLM
 
